@@ -24,6 +24,8 @@ capacity-0 capacity-1 capacity-2  capacity-3  capacity-4  - capacity-number
 (road factory-2 factory-1)
 (road factory-1 port-1)
 
+(road store-1 factory-2)
+
 (at_train train-1 port-1)
 
 (at p1 port-1)
