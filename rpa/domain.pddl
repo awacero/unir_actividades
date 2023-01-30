@@ -1,11 +1,10 @@
 (define (domain package-transport)
-  (:requirements :typing :fluents  :negative-preconditions :conditional-effects 
+  (:requirements :typing   :negative-preconditions :conditional-effects 
   :disjunctive-preconditions
   )
 
   (:types
     location train package operation ;- object
-
     capacity-number ;- object
 
     )
@@ -17,10 +16,6 @@
     (is_raw ?package - package)
     (is_processed ?package - package)
     (is_stored ?package -package)
-
-    (stored ?package - package)
-    (processed ?package - package)
-
     (on ?package - package ?train -train)
     (on_factory ?package ?location)
     (on_store ?package ?location)
@@ -31,13 +26,6 @@
     (capacity_location ?l - location ?s1 - capacity-number)
     (capacity-predecessor ?s1 ?s2 - capacity-number)
 
-  )
-
-  (:functions
-    (train_capacity)
-    (location_capacity)
-    (train_ocupation ?train )
-    (location_ocupation)
   )
 
 ;CARGAR EL TREN Y MOVERSE?
@@ -80,7 +68,6 @@
 
       (capacity_train ?train ?s1)
       (not (capacity_train ?train ?s2))
-
       (capacity_location ?location ?s2)
       (not (capacity_location ?location ?s1))
 
@@ -103,12 +90,11 @@
       (is_processed ?package);descargar el paquete equivaldria a procesarlo
 
       (not (on ?package ?train));
-      (decrease (train_ocupation ?train) 1)
-      (increase (location_ocupation) 1)
-        (capacity_train ?train ?s2)
-        (not (capacity_train ?train ?s1))
-        (capacity_location ?l1 ?s1)
-        (not (capacity_location ?l1 ?s2))
+
+      (capacity_train ?train ?s2)
+      (not (capacity_train ?train ?s1))
+      (capacity_location ?l1 ?s1)
+      (not (capacity_location ?l1 ?s2))
 
     )
   )
@@ -139,26 +125,6 @@
     )
     
   )
-
-  (:action process_package
-    :parameters (?p - package ?t -train ?l - location)
-    :precondition (and
-        (is_raw ?p)
-        (is_factory ?l)
-        (on_factory ?p ?l)
-        (on ?p ?t)
-        (at_train ?t ?l)  
-    )
-    :effect (and
-      (is_processed ?p)
-
-    )
-  )
-
-
-  
-
-
 
   (:action move-train
     :parameters (?t - train ?l1 - location ?l2 - location)
