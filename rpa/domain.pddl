@@ -28,7 +28,7 @@
 
   )
 
-;CARGAR EL TREN Y MOVERSE?
+
   (:action load_train_port_store
     :parameters (?package - package ?train - train ?l1  - location ?s1 ?s2 - capacity-number)
     :precondition (and
@@ -104,8 +104,8 @@
     :precondition (and
       (on ?package ?train)
       (at_train ?train ?location)
-      (is_processed ?package)
-      ;;(or (is_processed ?package) (is_raw ?package))
+      ;;(is_processed ?package)
+      (or (is_processed ?package) (is_raw ?package))
       (is_store ?location)
       (capacity-predecessor ?s1 ?s2)
       (capacity_train ?train ?s1) 
@@ -113,13 +113,14 @@
     :effect 
     (and 
     (on_store ?package ?location)
-      (is_stored ?package)
+      ;;;(is_stored ?package)
       ;(not(on ?package ?train))
       (not (on ?package ?train));
         (capacity_train ?train ?s2)
         (not (capacity_train ?train ?s1))
 
-        ;(when (is_processed ?package) (is_stored ?package))
+        (when (is_processed ?package) (is_stored ?package))
+        (when (is_raw ?package) (at ?package ?location ))
 
 
     )
